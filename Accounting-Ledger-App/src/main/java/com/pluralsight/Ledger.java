@@ -35,7 +35,7 @@ public class Ledger {
             payment();
         } else if (choice == 3) {
             // Create a ledger method
-            //ledger();
+            ledger();
         } else if (choice == 4) {
             //exitApplication();
         } else {
@@ -50,6 +50,7 @@ public class Ledger {
     public static void deposit() {
         System.out.println("Please enter the amount of the deposit: ");
         double amount = input.nextDouble();
+        input.nextLine();
         System.out.println("Please enter a description for your deposit: ");
         String description = input.nextLine();
         System.out.println("Please enter the vendor from wish to deposit: ");
@@ -77,7 +78,38 @@ public class Ledger {
         logger("Payment: " + date + " " + time + " " + description + " " + vendor + " " + amount);
     }
 
-    public
+    public static void ledger() {
+        System.out.println("What would you like to do?: ");
+        System.out.println("1: View all transactions");
+        System.out.println("2: View all deposits");
+        System.out.println("3: View all payments");
+        System.out.println("4: View reports");
+        System.out.println("5: Return to Homepage");
+        int choice = input.nextInt();
+        for (Transaction transaction : transactions) {
+            if (choice == 1) {
+            System.out.println(transaction);
+            } else if (choice == 2) {
+                double deposit = transaction.getAmount();
+                if (deposit > 0) {
+                    System.out.println(transaction);
+                }
+            } else if (choice == 3) {
+                double payment = transaction.getAmount();
+                if (payment < 0) {
+                    System.out.println(transaction);
+                }
+            }   else if (choice == 4) {
+                System.out.println("Please select a report type or search by vendor name: ");
+                System.out.println("1: Month to Date");
+                System.out.println("2: Previous Month");
+                System.out.println("3: Year to Date");
+                System.out.println("4: Previous Year");
+                System.out.println("5: Search by vendor");
+                System.out.println("6: Go Back");
+            }
+        }
+    }
 
     public static String getCurrentDate() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
