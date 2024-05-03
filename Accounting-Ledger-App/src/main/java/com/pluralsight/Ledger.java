@@ -83,13 +83,6 @@ public class Ledger {
     }
 
     public static void ledger() {
-        System.out.println("What would you like to do?: ");
-        System.out.println("1: View all transactions");
-        System.out.println("2: View all deposits");
-        System.out.println("3: View all payments");
-        System.out.println("4: View reports");
-        System.out.println("5: Return to Homepage");
-        int choice = input.nextInt();
         try (BufferedReader br = new BufferedReader(new FileReader("logs.csv"))) {
             String line;
             while ((line = br.readLine())!= null) {
@@ -107,19 +100,36 @@ public class Ledger {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        for (Transaction transaction : transactions) {
-            if (choice == 1) {
+        System.out.println("What would you like to do?: ");
+        System.out.println("1: View all transactions");
+        System.out.println("2: View all deposits");
+        System.out.println("3: View all payments");
+        System.out.println("4: View reports");
+        System.out.println("5: Return to Homepage");
+        int choice = input.nextInt();
+        input.nextLine();
 
-                System.out.println(transaction);
-            } else if (choice == 2) {
-                double deposit = transaction.getAmount();
-                if (deposit > 0) {
+            if (choice == 1) {
+                for (Transaction transaction : transactions) {
+
                     System.out.println(transaction);
                 }
+            } else if (choice == 2) {
+                for (Transaction transaction : transactions) {
+
+                    double deposit = transaction.getAmount();
+                    if (deposit > 0) {
+                    System.out.println(transaction);
+                    }
+                }
             } else if (choice == 3) {
+
+                for (Transaction transaction : transactions) {
+
                 double payment = transaction.getAmount();
                 if (payment < 0) {
                     System.out.println(transaction);
+                }
                 }
             }   else if (choice == 4) {
                 System.out.println("Please select a report type or search by vendor name: ");
@@ -134,52 +144,68 @@ public class Ledger {
                 //Calendar calendar = Calendar.getInstance();
                 switch (reportChoice) {
                     case 1:
+                        for (Transaction transaction : transactions) {
+
                         System.out.println("Month to Date");
                         LocalDate currentDate = LocalDate.parse(transaction.getDate());
                         LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
                         if (currentDate.isAfter(firstDayOfMonth)) {
                             transactions.forEach(System.out::println);
+                            System.out.println(transaction);
+                        }
                         }
                         break;
                     case 2:
+                        for (Transaction transaction : transactions) {
+
                         System.out.println("Previous Month");
                         LocalDate currentMonth = LocalDate.parse(transaction.getDate());
                         LocalDate previousMonth = currentMonth.minusMonths(1);
                         if (previousMonth.isBefore(currentMonth)) {
                             transactions.forEach(System.out::println);
                         }
+                        }
                         break;
                     case 3:
+                        for (Transaction transaction : transactions) {
+
                         System.out.println("Year to Date");
                         LocalDate yearToDate = LocalDate.parse(transaction.getDate());
                         LocalDate firstDayOfYear = yearToDate.withDayOfYear(1);
                         if (yearToDate.isAfter(firstDayOfYear)) {
                             transactions.forEach(System.out::println);
                         }
+                        }
                         break;
                     case 4:
+                        for (Transaction transaction : transactions) {
+
                         System.out.println("Previous Year");
                         LocalDate currentYear = LocalDate.parse(transaction.getDate());
                         LocalDate previousYear = currentYear.minusYears(1);
                         if (previousYear.isBefore(currentYear)) {
                             transactions.forEach(System.out::println);
                         }
+                        }
                         break;
                     case 5:
                         System.out.println("Search by vendor");
                         System.out.println("Please enter the vendor name: ");
                         String vendor = input.nextLine();
+                        for (Transaction transaction : transactions) {
+
                             if (transaction.getVendor().equals(vendor)) {
                                 System.out.println(transaction);
                             }
                         break;
+                        }
                     case 6:
                         System.out.println("Go Back");
                         ledger();
                         break;
                 }
             }
-        }
+
     }
 
     public static String getCurrentDate() {
